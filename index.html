@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Calendário</title>
+
+<style>
+body{
+margin:0;
+background-size:cover;
+background-position:center;
+height:100vh;
+overflow:hidden;
+font-family:Georgia;
+}
+
+.fundo{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.25);
+}
+
+iframe{
+position:absolute;
+top:80px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+height:80%;
+border:none;
+opacity:0.9;
+}
+
+h1{
+position:absolute;
+top:20px;
+left:40px;
+color:white;
+font-size:60px;
+font-style:italic;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="fundo"></div>
+
+<h1 id="mes"></h1>
+
+<iframe id="calendar"></iframe>
+
+<script>
+
+const meses=[
+"Janeiro","Fevereiro","Março","Abril",
+"Maio","Junho","Julho","Agosto",
+"Setembro","Outubro","Novembro","Dezembro"
+];
+
+document.getElementById("mes").innerText=
+meses[new Date().getMonth()];
+
+const imagens=[
+"https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5",
+"https://images.unsplash.com/photo-1577083552431-6e5fd75fcfb9",
+"https://images.unsplash.com/photo-1578301978018-3005759f48f7",
+"https://images.unsplash.com/photo-1579783901586-d88db74b4fe4"
+];
+
+function mudarFundo(){
+const hora=new Date().getHours();
+document.body.style.backgroundImage=
+`url(${imagens[hora%imagens.length]})`;
+}
+
+mudarFundo();
+setInterval(mudarFundo,3600000);
+
+</script>
+
+</body>
+</html>
