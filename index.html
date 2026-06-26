@@ -6,19 +6,20 @@
 <title>Calendário Artístico</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    width:100vw;
     height:100vh;
     overflow:hidden;
     font-family:Georgia, serif;
+    color:#f4eee5;
     background-size:cover;
     background-position:center;
-    color:#f3eee6;
+    transition:background-image 1s ease;
 }
 
 body::before{
@@ -31,8 +32,8 @@ body::before{
 
 #mes{
     position:absolute;
-    top:40px;
-    left:40px;
+    top:35px;
+    left:45px;
     font-size:72px;
     font-style:italic;
     z-index:2;
@@ -48,7 +49,7 @@ body::before{
 
 #dias{
     position:absolute;
-    top:160px;
+    top:145px;
     left:7%;
     width:86%;
     display:grid;
@@ -59,13 +60,13 @@ body::before{
 }
 
 #dias div{
-    font-size:24px;
+    font-size:23px;
     opacity:.9;
 }
 
 #calendar{
     position:absolute;
-    top:205px;
+    top:190px;
     left:7%;
     width:86%;
     height:70%;
@@ -76,28 +77,28 @@ body::before{
 }
 
 .dia{
-    border:1px solid rgba(255,255,255,.08);
-    padding:10px;
-    background:rgba(255,255,255,.02);
+    border:1px solid rgba(255,255,255,.12);
+    padding:8px;
+    background:rgba(255,255,255,.03);
+    backdrop-filter:blur(2px);
 }
 
 .numero{
-    font-size:26px;
     text-align:right;
-    opacity:.95;
+    font-size:25px;
 }
 
 .evento{
-    margin-top:8px;
-    font-size:12px;
+    margin-top:6px;
+    padding:3px 7px;
+    border-radius:15px;
     background:rgba(255,255,255,.18);
-    border-radius:20px;
-    padding:4px 8px;
+    font-size:11px;
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    backdrop-filter:blur(6px);
 }
+
 </style>
 </head>
 
@@ -120,16 +121,23 @@ body::before{
 
 <script>
 
+const API_KEY = "AIzaSyC6X35o2JxZXgt77QtTRG9s9y8mOUt-Xm0";
+const CALENDAR_ID = "thaiisbianquini@gmail.com";
+
 const imagens = [
 "https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/1.png",
-"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/2.png"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/2.png",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/1.png"
 ];
 
 function mudarFundo(){
     const hora = new Date().getHours();
     document.body.style.backgroundImage =
-    `url(${imagens[hora % imagens.length]})`;
+        `url(${imagens[hora % imagens.length]})`;
 }
+
+mudarFundo();
+setInterval(mudarFundo,3600000);
 
 const meses = [
 "Janeiro","Fevereiro","Março","Abril",
@@ -145,10 +153,10 @@ meses[hoje.getMonth()];
 document.getElementById("ano").innerText =
 hoje.getFullYear();
 
-function criarCalendario(){
+async function criarCalendario(){
 
     const calendario =
-    document.getElementById("calendar");
+        document.getElementById("calendar");
 
     calendario.innerHTML = "";
 
@@ -156,30 +164,71 @@ function criarCalendario(){
     const mes = hoje.getMonth();
 
     let primeiro =
-    new Date(ano,mes,1).getDay();
+        new Date(ano,mes,1).getDay();
 
     primeiro = primeiro === 0 ? 6 : primeiro - 1;
 
     const diasMes =
-    new Date(ano,mes+1,0).getDate();
+        new Date(ano,mes+1,0).getDate();
+
+    const inicio =
+        new Date(ano,mes,1).toISOString();
+
+    const fim =
+        new Date(ano,mes+1,1).toISOString();
+
+    let eventos = [];
+
+    try{
+
+        const resposta = await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?key=${API_KEY}&timeMin=${inicio}&timeMax=${fim}&singleEvents=true&orderBy=startTime`
+        );
+
+        const dados = await resposta.json();
+
+        eventos = dados.items || [];
+
+    }catch(e){
+        console.log(e);
+    }
 
     for(let i=0;i<primeiro;i++){
         calendario.innerHTML += "<div></div>";
     }
 
-    for(let dia=1;dia<=diasMes;dia++){
+    for(let dia=1; dia<=diasMes; dia++){
+
+        let htmlEventos = "";
+
+        eventos.forEach(ev => {
+
+            const data =
+                ev.start.date ||
+                ev.start.dateTime;
+
+            const d = new Date(data);
+
+            if(d.getDate() === dia){
+
+                htmlEventos += `
+                <div class="evento">
+                    ${ev.summary}
+                </div>
+                `;
+            }
+        });
 
         calendario.innerHTML += `
         <div class="dia">
             <div class="numero">${dia}</div>
+            ${htmlEventos}
         </div>
         `;
     }
 }
 
 criarCalendario();
-mudarFundo();
-setInterval(mudarFundo,3600000);
 
 </script>
 
