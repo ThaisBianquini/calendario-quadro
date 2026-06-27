@@ -287,26 +287,26 @@ async function criarCalendario(){
                             titulo.charCodeAt(i);
                     }
 
-                    cor =
-                    cores[
-                        numero %
-                        cores.length
-                    ];
+                                        cor =
+                        cores[
+                            numero %
+                            cores.length
+                        ];
+                }
+
+                htmlEventos += `
+                <div
+                    class="evento"
+                    style="
+                    background:${cor}4D;
+                    border:1px solid ${cor}88;
+                    "
+                >
+                    • ${ev.summary}
+                </div>
+                `;
             }
-
-            htmlEventos += `
-            <div
-                class="evento"
-                style="
-                background:${cor}4D;
-                border:1px solid ${cor}88;
-                "
-            >
-                • ${ev.summary}
-            </div>
-            `;
         });
-
         
         let classe = "dia";
 
