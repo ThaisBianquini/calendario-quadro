@@ -436,6 +436,22 @@ const concluido =
 
 criarCalendario();
 
+setInterval(() => {
+    criarCalendario();
+}, 60000);
+
+setInterval(() => {
+
+    const agora = new Date();
+
+    if (
+        agora.getHours() === 0 &&
+        agora.getMinutes() === 0
+    ) {
+        location.reload();
+    }
+
+}, 60000);
 </script>
 
 </body>
