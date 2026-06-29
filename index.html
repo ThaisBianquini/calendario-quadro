@@ -345,14 +345,7 @@ async function criarCalendario(){
                             cores.length
                         ];
                 } 
-                const id = btoa(
-                    ev.summary +
-                    data
-                );
-
-                const concluido =
-                    localStorage.getItem(id);
-
+                
                 htmlEventos += `
                     <div
                         class="evento ${concluido ? "feito" : ""}"
