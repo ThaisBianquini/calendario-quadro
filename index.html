@@ -346,18 +346,27 @@ async function criarCalendario(){
                         ];
                 } 
                 
-                htmlEventos += `
-                    <div
-                        class="evento ${concluido ? "feito" : ""}"
-                        data-id="${id}"
-                        style="
-                            background:${cor}4D;
-                            border:1px solid ${cor}88;
-                        "
-                    >
-                        • ${ev.summary}
-                    </div>
-                `;
+                
+        const id = btoa(
+            ev.summary +
+            data
+        );
+
+        const concluido =
+            localStorage.getItem(id);
+
+        htmlEventos += `
+            <div
+                class="evento ${concluido ? "feito" : ""}"
+                data-id="${id}"
+                style="
+                    background:${cor}4D;
+                    border:1px solid ${cor}88;
+                "
+            >
+                • ${ev.summary}
+            </div>
+        `;
         
             }
         });
