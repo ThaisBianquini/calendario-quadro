@@ -237,6 +237,12 @@ async function criarCalendario(){
 
     hoje = new Date();
 
+    document.getElementById("mes").innerText =
+    meses[hoje.getMonth()];
+
+    document.getElementById("ano").innerText =
+    hoje.getFullYear();
+
     const calendario =
         document.getElementById("calendar");
 
