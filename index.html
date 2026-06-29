@@ -339,21 +339,21 @@ async function criarCalendario(){
                             titulo.charCodeAt(i);
                     }
 
-                                        cor =
+                    cor =
                         cores[
                             numero %
                             cores.length
                         ];
                 } 
-                    const id = btoa(
-                        ev.summary +
-                        data
-                    );
+                const id = btoa(
+                    ev.summary +
+                    data
+                );
 
-                    const concluido =
-                        localStorage.getItem(id);
+                const concluido =
+                    localStorage.getItem(id);
 
-                    htmlEventos += `
+                htmlEventos += `
                     <div
                         class="evento ${concluido ? "feito" : ""}"
                         data-id="${id}"
@@ -364,7 +364,7 @@ async function criarCalendario(){
                     >
                         • ${ev.summary}
                     </div>
-                    `;
+                `;
         
             }
         });
