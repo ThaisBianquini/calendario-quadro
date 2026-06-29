@@ -3,9 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Calendário">
+    
 <title>Calendário Artístico</title>
 
 <style>
+
+    .evento{
+    cursor:pointer;
+    transition:.3s;
+}
+
+.evento.feito{
+    opacity:.35 !important;
+    transform:scale(.92);
+}
+
+.evento.feito::before{
+    content:"✓";
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:14px;
+    height:14px;
+    margin-right:5px;
+    border-radius:50%;
+    background:#51b749;
+    color:white;
+    font-size:10px;
+}
 
 *{
     box-sizing:border-box;
@@ -27,7 +55,7 @@ body::before{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,.35);
+    background:rgba(0,0,0,.08);
     z-index:0;
 }
 
@@ -38,7 +66,7 @@ body::before{
     font-size:70px;
     font-style:italic;
     z-index:2;
-    opacity:.5;
+    opacity:.1;
 }
 
 #ano{
@@ -47,7 +75,7 @@ body::before{
     right:35px;
     font-size:35px;
     z-index:2;
-    opacity:.5;
+    opacity:.1;
 }
 
 #dias{
@@ -64,12 +92,12 @@ body::before{
     text-align:center;
     font-size:20px;
     padding-bottom:8px;
-    opacity:.5;
+    opacity:.1;
 }
     
 #calendar{
     position:absolute;
-    top:165px;
+    top:145px;
     left:5%;
     width:90%;
     height:73%;
@@ -80,7 +108,7 @@ body::before{
 }
 
 .dia{
-    border:1px solid rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.08);
     background:rgba(255,255,255,.02);
     padding:8px;
     position:relative;
@@ -90,7 +118,7 @@ body::before{
 .numero{
     text-align:right;
     font-size:24px;
-    opacity:.5;
+    opacity:.1;
 }
 
 .evento{
@@ -109,14 +137,14 @@ body::before{
     position:absolute;
     width:170%;
     height:1px;
-    background:rgba(255,255,255,.25);
+    background:rgba(255,255,255,.1);
     left:-35%;
     top:50%;
     transform:rotate(-52deg);
 }
 
 .hoje{
-    border:2px solid rgba(255,255,255,.8);
+    border:2px solid rgba(255,255,255,.4);
     box-shadow:
         0 0 0 1px rgba(255,255,255,.25),
         inset 0 0 0 1px rgba(255,255,255,.2);
@@ -147,9 +175,25 @@ const API_KEY = "AIzaSyC6X35o2JxZXgt77QtTRG9s9y8mOUt-Xm0";
 const CALENDAR_ID = "thaiisbianquini@gmail.com";
 
 const imagens = [
-"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/1.png",
-"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/2.png",
-"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/1.png"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/1.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/2.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/3.jpg"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/4.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/5.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/6.jpg"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/7.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/8.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/9.jpg"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/10.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/11.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/12.jpg"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/13.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/14.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/15.jpg"
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/16.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/17.jpg",
+"https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/18.jpg"
+
 ];
 
 const coresGoogle = {
@@ -287,26 +331,46 @@ async function criarCalendario(){
                             titulo.charCodeAt(i);
                     }
 
-                    cor =
-                    cores[
-                        numero %
-                        cores.length
-                    ];
+                                        cor =
+                        cores[
+                            numero %
+                            cores.length
+                        ];
+                }
+
+                const id =
+    btoa(
+        ev.summary +
+        data
+    );
+
+const concluido =
+    localStorage.getItem(id);
+
+        const id =
+            btoa(
+                ev.summary +
+                data
+            );
+
+        const concluido =
+            localStorage.getItem(id);
+
+        htmlEventos += `
+        <div
+            class="evento ${concluido ? "feito" : ""}"
+            data-id="${id}"
+            style="
+            background:${cor}4D;
+            border:1px solid ${cor}88;
+            "
+        >
+            • ${ev.summary}
+        </div>
+        `;
+        
             }
-
-            htmlEventos += `
-            <div
-                class="evento"
-                style="
-                background:${cor}4D;
-                border:1px solid ${cor}88;
-                "
-            >
-                • ${ev.summary}
-            </div>
-            `;
         });
-
         
         let classe = "dia";
 
@@ -333,10 +397,61 @@ async function criarCalendario(){
         </div>
         `;
     }
+        document
+    .querySelectorAll(".evento")
+    .forEach(el=>{
+
+        el.onclick = ()=>{
+
+            const id =
+                el.dataset.id;
+
+            if(
+                el.classList.contains(
+                    "feito"
+                )
+            ){
+                el.classList.remove(
+                    "feito"
+                );
+
+                localStorage.removeItem(
+                    id
+                );
+            }
+            else{
+
+                el.classList.add(
+                    "feito"
+                );
+
+                localStorage.setItem(
+                    id,
+                    "1"
+                );
+            }
+        };
+    });
 }
 
 criarCalendario();
 
+setInterval(() => {
+    criarCalendario();
+}, 60000);
+
+setInterval(() => {
+
+    const agora = new Date();
+
+    if (
+        agora.getHours() === 0 &&
+        agora.getMinutes() === 0
+    ) {
+        location.reload();
+    }
+
+}, 60000);
 </script>
 
 </body>
