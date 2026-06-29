@@ -338,31 +338,27 @@ async function criarCalendario(){
                             numero %
                             cores.length
                         ];
-                    }
-                }
+                } 
+                    const id = btoa(
+                        ev.summary +
+                        data
+                    );
 
-            
-        const id =
-            btoa(
-                ev.summary +
-                data
-            );
+                    const concluido =
+                        localStorage.getItem(id);
 
-        const concluido =
-            localStorage.getItem(id);
-
-        htmlEventos += `
-        <div
-            class="evento ${concluido ? "feito" : ""}"
-            data-id="${id}"
-            style="
-            background:${cor}4D;
-            border:1px solid ${cor}88;
-            "
-        >
-            • ${ev.summary}
-        </div>
-        `;
+                    htmlEventos += `
+                    <div
+                        class="evento ${concluido ? "feito" : ""}"
+                        data-id="${id}"
+                        style="
+                            background:${cor}4D;
+                            border:1px solid ${cor}88;
+                        "
+                    >
+                        • ${ev.summary}
+                    </div>
+                    `;
         
             }
         });
