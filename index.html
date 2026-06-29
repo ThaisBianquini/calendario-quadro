@@ -225,7 +225,7 @@ const meses = [
 "Setembro","Outubro","Novembro","Dezembro"
 ];
 
-const hoje = new Date();
+let hoje = new Date();
 
 document.getElementById("mes").innerText =
 meses[hoje.getMonth()];
@@ -234,6 +234,8 @@ document.getElementById("ano").innerText =
 hoje.getFullYear();
 
 async function criarCalendario(){
+
+    hoje = new Date();
 
     const calendario =
         document.getElementById("calendar");
@@ -336,6 +338,7 @@ async function criarCalendario(){
                             numero %
                             cores.length
                         ];
+                    }
                 }
 
             
