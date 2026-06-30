@@ -395,47 +395,47 @@ async function criarCalendario(){
         `;
     }
             let diaSeguinte = 1;
-            
-    console.log(eventos);
 
-    while ((primeiro + diasMes + diaSeguinte - 1) % 7 !== 0) {
+while ((primeiro + diasMes + diaSeguinte - 1) % 7 !== 0) {
+    let htmlEventos = "";
 
-        let htmlEventos = "";
+    eventos.forEach(ev => {
+        const data =
+            ev.start.date ||
+            ev.start.dateTime;
 
-        eventos.forEach(ev => {
-            const data =
-                ev.start.date ||
-                ev.start.dateTime;
+        const d = new Date(data);
 
-            const d = new Date(data);
-            
-            console.log(ev.summary, d);
+        if (
+            d.getDate() === diaSeguinte &&
+            d.getMonth() === ((mes + 1) % 12)
+        ) {
+            let cor = pegarCor(ev.summary);
 
-            if (
-                d.getDate() === diaSeguinte &&
-                d.getMonth() === ((mes + 1) % 12)
-            
-            ) {
-                let cor = pegarCor(ev.summary);
-                
-                htmlEventos += `
-                    <div class="evento">
-                        • ${ev.summary}
-                    </div>
-                `;
-            }
-        });
+            htmlEventos += `
+                <div
+                    class="evento"
+                    style="
+                        background:${cor}4D;
+                        border:1px solid ${cor}88;
+                    "
+                >
+                    • ${ev.summary}
+                </div>
+            `;
+        }
+    });
 
-        calendario.innerHTML += `
-            <div class="dia outro-mes">
-                <div class="numero">${diaSeguinte}</div>
-                ${htmlEventos}
-            </div>
-        `;
+    calendario.innerHTML += `
+        <div class="dia outro-mes">
+            <div class="numero">${diaSeguinte}</div>
+            ${htmlEventos}
+        </div>
+    `;
 
-        diaSeguinte++;
-    }
+    diaSeguinte++;
 }
+
 
 criarCalendario();
 
