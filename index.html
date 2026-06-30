@@ -268,43 +268,10 @@ async function criarCalendario(){
                 d.getMonth()===mes
             ){
 
-                let cor = pegarCor(ev.summary);
+                let cor;
 
                 const titulo =
                     ev.summary.toLowerCase();
-                    
-                function pegarCor(titulo) {
-                    titulo = titulo.toLowerCase();
-                
-                    if (titulo.includes("aluguel")) {
-                        return "#dc2127";
-                    }
-                
-                    if (
-                        titulo.includes("estrogênio") ||
-                        titulo.includes("estrogenio")
-                    ) {
-                        return "#f4c2c2";
-                    }
-                
-                    const cores = [
-                        "#5484ed",
-                        "#51b749",
-                        "#fbd75b",
-                        "#ff887c",
-                        "#dbadff",
-                        "#46d6db",
-                        "#ffb878"
-                    ];
-                
-                    let numero = 0;
-                
-                    for (let i = 0; i < titulo.length; i++) {
-                        numero += titulo.charCodeAt(i);
-                    }
-                
-                    return cores[numero % cores.length];
-                }
 
                 if (titulo.includes("aluguel")) {
                     cor = "#dc2127";
@@ -416,8 +383,6 @@ async function criarCalendario(){
                 d.getMonth() === ((mes + 1) % 12)
             
             ) {
-                let cor = pegarCor(ev.summary);
-                
                 htmlEventos += `
                     <div class="evento">
                         • ${ev.summary}
