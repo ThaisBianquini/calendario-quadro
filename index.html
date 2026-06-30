@@ -352,6 +352,8 @@ async function criarCalendario(){
         `;
     }
             let diaSeguinte = 1;
+            
+    console.log(eventos);
 
     while ((primeiro + diasMes + diaSeguinte - 1) % 7 !== 0) {
 
@@ -363,6 +365,8 @@ async function criarCalendario(){
                 ev.start.dateTime;
 
             const d = new Date(data);
+            
+            console.log(ev.summary, d);
 
             if (
                 d.getDate() === diaSeguinte &&
