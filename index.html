@@ -230,8 +230,8 @@ async function criarCalendario(){
         new Date(ano,mes,1).toISOString();
 
     const fim =
-        new Date(ano,mes+1,1).toISOString();
-
+    	new Date(ano, mes + 2, 0).toISOString();
+        
     let eventos = [];
 
     try{
