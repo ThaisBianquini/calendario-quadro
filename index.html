@@ -325,7 +325,7 @@ async function criarCalendario(){
                 `;
             }
         });
-        
+
         let classe = "dia";
 
         if(
@@ -349,6 +349,15 @@ async function criarCalendario(){
             <div class="numero">${dia}</div>
             ${htmlEventos}
         </div>
+        `;
+    }
+        let diaSeguinte = 1;
+
+    while ((primeiro + diasMes + diaSeguinte - 1) % 7 !== 0) {
+        calendario.innerHTML += `
+            <div class="dia outro-mes">
+                <div class="numero">${diaSeguinte++}</div>
+            </div>
         `;
     }
 }
