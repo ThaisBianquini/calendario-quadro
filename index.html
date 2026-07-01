@@ -107,24 +107,35 @@ body::before{
     text-overflow:ellipsis;
     cursor:pointer;
     transition:all .3s ease;
-    position:relative;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.evento::before{
+    content:"";
+    width:0;
+    height:0;
+    border-radius:50%;
+    background:rgba(180,255,180,.45);
+    flex-shrink:0;
+    transition:all .3s ease;
 }
 
 .evento.concluido{
-    width:24px;
-    height:24px;
-    padding:0;
-    border-radius:50%;
+    font-size:9px;
+    opacity:.9;
+}
+
+.evento.concluido::before{
+    content:"✓";
+    width:18px;
+    height:18px;
+    color:#dfffe0;
+    border:1px solid rgba(180,255,180,.5);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:0;
-}
-
-.evento.concluido::after{
-    content:"✓";
-    font-size:13px;
-    color:white;
 }
 
 .passado::after{
@@ -422,15 +433,14 @@ async function criarCalendario(){
     }
 }
 
-
 criarCalendario();
 
 document.addEventListener("click", e => {
-    if (e.target.classList.contains("evento")) {
-        e.target.classList.toggle("concluido");
+    const evento = e.target.closest(".evento");
+    if(evento){
+        evento.classList.toggle("concluido");
     }
 });
-
 
 </script>
 
