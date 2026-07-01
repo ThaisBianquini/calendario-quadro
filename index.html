@@ -105,37 +105,6 @@ body::before{
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    cursor:pointer;
-    transition:all .3s ease;
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
-
-.evento::before{
-    content:"";
-    width:0;
-    height:0;
-    border-radius:50%;
-    background:rgba(180,255,180,.45);
-    flex-shrink:0;
-    transition:all .3s ease;
-}
-
-.evento.concluido{
-    font-size:9px;
-    opacity:.9;
-}
-
-.evento.concluido::before{
-    content:"✓";
-    width:18px;
-    height:18px;
-    color:#dfffe0;
-    border:1px solid rgba(180,255,180,.5);
-    display:flex;
-    align-items:center;
-    justify-content:center;
 }
 
 .passado::after{
@@ -178,7 +147,10 @@ body::before{
 <script>
 
 const API_KEY = "AIzaSyC6X35o2JxZXgt77QtTRG9s9y8mOUt-Xm0";
-const CALENDAR_ID = "thaiisbianquini@gmail.com";
+const CALENDARS = [
+  "thaiisbianquini@gmail.com",
+  "family01183662948647517097@group.calendar.google.com"
+];
 
 const imagens = [
 "https://raw.githubusercontent.com/ThaisBianquini/calendario-quadro/main/1.jpg",
@@ -267,12 +239,14 @@ async function criarCalendario(){
 
     try{
 
-        const resposta = await fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?key=${API_KEY}&timeMin=${inicio}&timeMax=${fim}&singleEvents=true&orderBy=startTime`
-        );
+        for (const calendarId of CALENDARS) {
+            const resposta = await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${API_KEY}&timeMin=${inicio}&timeMax=${fim}&singleEvents=true&orderBy=startTime`
+            );
 
-        const dados = await resposta.json();
-        eventos = dados.items || [];
+            const dados = await resposta.json();
+            eventos.push(...(dados.items || []));
+        }
 
     }catch(e){
         console.log(e);
@@ -434,13 +408,6 @@ async function criarCalendario(){
 }
 
 criarCalendario();
-
-document.addEventListener("click", e => {
-    const evento = e.target.closest(".evento");
-    if(evento){
-        evento.classList.toggle("concluido");
-    }
-});
 
 </script>
 
